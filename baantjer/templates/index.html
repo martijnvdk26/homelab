@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baantjer Boeken</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1><a href="/" style="text-decoration: none; color:inherit"> Baantjer Boekenlijst</a></h1>
+    <form method="POST">
+        <input type="text" name="search" placeholder="Zoek...">
+        <input type="submit" value="Zoeken">
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Nummer</th>
+                <th>Titel</th>
+                <th>ISBN</th>
+                <th>Jaar</th>
+                <th>Zit in collectie</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book['number'] }}</td>
+                <td>{{ book['title'] }}</td>
+                <td>{{ book['isbn'] }}</td>
+                <td>{{ book['year'] }}</td>
+                <td>{{ book['available'] }}</td>
+            </tr>
+            {% endfor %}
+            {% if books|length == 0 %}
+            <tr>
+                <td colspan="5" style="text-align: center;">Geen resultaten gevonden</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</body>
+</html>
