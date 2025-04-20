@@ -1,0 +1,50 @@
+{
+    auto_https disable_redirects
+    admin 0.0.0.0:2019
+}
+
+*.martijnvanderkooi.nl {
+    tls {
+        dns cloudflare {env.CF_API_TOKEN}
+        propagation_delay 2m
+        resolvers 1.1.1.1
+    }
+
+    @redirect host martijnvanderkooi.nl www.martijnvanderkooi.nl
+    handle @redirect {
+        redir https://home.martijnvanderkooi.nl 301
+    }
+
+    @home host home.martijnvanderkooi.nl
+    handle @home {
+        reverse_proxy 192.168.1.23:80
+    }
+
+    @portainer host portainer.martijnvanderkooi.nl
+    handle @portainer {
+        reverse_proxy 192.168.1.24:9443 {
+            transport http {
+                tls_insecure_skip_verify
+            }
+        }
+    }
+}
+
+
+*.blieke.nl {
+    tls {
+        dns cloudflare {env.CF_API_TOKEN}
+        propagation_delay 2m
+        resolvers 1.1.1.1
+    }
+
+    @kluis host kluis.blieke.nl
+    handle @kluis {
+        reverse_proxy 192.168.1.21:8080
+    }
+
+    @baantjer host baantjer.blieke.nl
+    handle @baantjer {
+        reverse_proxy 192.168.1.22:80
+    }
+}
